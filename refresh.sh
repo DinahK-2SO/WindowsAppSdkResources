@@ -76,3 +76,36 @@ for BRANCH in $BRANCHES; do
 done
 
 echo "All Samples folders have been downloaded."
+
+cd "$WORKDIR"
+REPO="https://github.com/MicrosoftDocs/windows-ai-docs.git"
+
+BRANCHES="docs"
+RESOURCE_WINAPPSDK_SPECS_DIR="Windows-AI-Docs"
+
+mkdir -p "$WORKDIR/$RESOURCE_WINAPPSDK_SPECS_DIR" && cd "$WORKDIR/$RESOURCE_WINAPPSDK_SPECS_DIR" || { echo "Failed to enter the $RESOURCE_WINAPPSDK_SPECS_DIR directory"; exit 1; }
+
+for BRANCH in $BRANCHES; do
+    FOLDER=$(basename "$BRANCH")
+    echo "Processing branch $BRANCH..."
+
+    rm -rf "$WORKDIR/$RESOURCE_WINAPPSDK_SPECS_DIR/$FOLDER"
+    mkdir -p "$WORKDIR/$RESOURCE_WINAPPSDK_SPECS_DIR/$FOLDER"
+    cd "$WORKDIR/$RESOURCE_WINAPPSDK_SPECS_DIR/$FOLDER"
+
+    git init
+    git remote add origin "$REPO"
+    git config core.sparseCheckout true
+
+    echo "docs/" > .git/info/sparse-checkout
+
+    git fetch --depth 1 origin "$BRANCH"
+    git checkout "$BRANCH"
+
+    rm -rf .git
+
+    mv ./docs/* ./
+
+done
+
+echo "All ai docs have been downloaded."
