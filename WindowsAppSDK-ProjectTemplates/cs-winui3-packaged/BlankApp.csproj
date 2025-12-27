@@ -7,10 +7,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
-    <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
+    <IncludeSamples Condition="'$(IncludeSamples)' == ''">false</IncludeSamples>
+    <DefineConstants Condition="'$(IncludeSamples)' == 'true'">$(DefineConstants);INCLUDE_SAMPLES</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,15 +50,24 @@
     <!-- Logging - File with rotation (Serilog integrates with Microsoft.Extensions.Logging) -->
     <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+
+    <!-- MVVM helpers for WinUI 3 (RelayCommand/ObservableObject) -->
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
   </ItemGroup>
 
   <!-- IMPORTANT: Exclude test files and test project folder from shipping build -->
   <ItemGroup>
     <Compile Remove="**\*.Test.cs" />
-    <Compile Remove="**\*.Sample.cs" />
     <Compile Remove="Tests\**" />
     <None Include="**\*.Test.cs" />
+  </ItemGroup>
+
+  <!-- Toggle sample source exclusion with IncludeSamples (default false) -->
+  <ItemGroup Condition="'$(IncludeSamples)' != 'true'">
+    <Compile Remove="**\*.Sample.cs" />
+    <Compile Remove="**\*.Sample.Test.cs" />
     <None Include="**\*.Sample.cs" />
+    <None Include="**\*.Sample.Test.cs" />
   </ItemGroup>
 
   <!--

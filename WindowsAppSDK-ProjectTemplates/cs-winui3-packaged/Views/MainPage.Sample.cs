@@ -1,4 +1,5 @@
 using BlankApp.ViewModels;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -10,6 +11,8 @@ namespace BlankApp.Views;
 /// </summary>
 public sealed partial class MainPage : Page
 {
+    private readonly ILogger<MainPage> _logger;
+
     /// <summary>
     /// Gets the ViewModel for this page.
     /// ViewModel is injected via dependency injection.
@@ -24,10 +27,18 @@ public sealed partial class MainPage : Page
         this.InitializeComponent();
         
         // Get ViewModel from DI container
+        _logger = App.GetService<ILogger<MainPage>>();
         ViewModel = App.GetService<MainViewModel>();
         
         // Set DataContext for bindings
         DataContext = ViewModel;
+
+        _logger.LogDebug("MainPage constructed");
+    }
+
+    // Sample stub for XAML-less compilation when samples are included
+    private void InitializeComponent()
+    {
     }
 
     /// <summary>

@@ -23,57 +23,7 @@ This folder contains domain models (DTOs, entities) shared across all layers.
 - View models data: `[Name]Data.cs`
 
 ## Code Samples
-
-**Complete working example:**
-- **Domain Models**: [`User.Sample.cs`](User.Sample.cs) - Entity, DTOs, records
-
-**Quick template for entity:**
-```csharp
-/// <summary>
-/// Represents a user in the system.
-/// </summary>
-public class User
-{
-    public int Id { get; set; }
-    
-    [Required]
-    [MaxLength(100)]
-    public string Name { get; set; }
-    
-    [EmailAddress]
-    public string Email { get; set; }
-    
-    [Range(0, 150)]
-    public int Age { get; set; }
-    
-    public DateTime CreatedAt { get; set; }
-    
-    public DateTime? UpdatedAt { get; set; }
-}
-```
-
-## Code Template - DTO
-```csharp
-/// <summary>
-/// Data transfer object for user creation.
-/// </summary>
-public record CreateUserDto(
-    string Name,
-    string Email,
-    int Age
-);
-
-/// <summary>
-/// Data transfer object for user response.
-/// </summary>
-public record UserDto
-{
-    public int Id { get; init; }
-    public string Name { get; init; }
-    public string Email { get; init; }
-    public int Age { get; init; }
-}
-```
+- See [`User.Sample.cs`](User.Sample.cs) for entity/DTO/record patterns.
 
 ## Usage Across Layers
 

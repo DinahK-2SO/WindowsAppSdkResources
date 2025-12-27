@@ -8,6 +8,9 @@
     <Nullable>enable</Nullable>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <IncludeSamples Condition="'$(IncludeSamples)' == ''">false</IncludeSamples>
+    <DefineConstants Condition="'$(IncludeSamples)' == 'true'">$(DefineConstants);INCLUDE_SAMPLES</DefineConstants>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,13 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Include test files from co-located layer folders (one level up, then into each layer) -->
-    <Compile Include="..\Views\**\*.Test.cs" LinkBase="Views" Exclude="..\**\*.Sample.cs" />
-    <Compile Include="..\ViewModels\**\*.Test.cs" LinkBase="ViewModels" Exclude="..\**\*.Sample.cs" />
-    <Compile Include="..\Services\**\*.Test.cs" LinkBase="Services" Exclude="..\**\*.Sample.cs" />
-    <Compile Include="..\Data\**\*.Test.cs" LinkBase="Data" Exclude="..\**\*.Sample.cs" />
-    <Compile Include="..\Models\**\*.Test.cs" LinkBase="Models" Exclude="..\**\*.Sample.cs" />
-    <Compile Include="..\Infrastructure\**\*.Test.cs" LinkBase="Infrastructure" Exclude="..\**\*.Sample.cs" />
+    <!-- Include tests; optionally include sample tests when IncludeSamples=true -->
+    <Compile Include="..\**\*.Test.cs"
+             LinkBase="Sources"
+             Exclude="..\**\*.Sample.cs;..\**\*.Sample.Test.cs;..\Tests\**;..\bin\**;..\obj\**"
+             Condition="'$(IncludeSamples)' != 'true'" />
+    <Compile Include="..\**\*.Test.cs"
+             LinkBase="Sources"
+             Exclude="..\Tests\**;..\bin\**;..\obj\**"
+             Condition="'$(IncludeSamples)' == 'true'" />
   </ItemGroup>
 
   <ItemGroup>

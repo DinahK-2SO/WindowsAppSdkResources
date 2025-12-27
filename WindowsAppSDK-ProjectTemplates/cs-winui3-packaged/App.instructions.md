@@ -44,6 +44,15 @@ Each layer has detailed instructions - **READ BEFORE CODING!**
 
 **Dependency Flow:** Views → ViewModels → Services → Data → Models (NEVER violate)
 
+## Code Samples
+- See per-layer sample files in each folder (e.g., `*.Sample.cs` and `*.Sample.Test.cs`) for concrete patterns.
+
+### DI and Logging Setup (App.xaml.cs)
+- Configure services with `AddAppLogging()` from Infrastructure.
+- Register sample implementations for DI: `IUserRepository` → `UserRepository`, `IUserService` → `UserService`, and `MainViewModel`.
+- Use `App.GetService<T>()` to resolve dependencies (e.g., in pages to get `MainViewModel`).
+- Global exception hooks log critical failures (UI, task, AppDomain).
+
 ## 🧪 Co-located Testing
 
 Tests **beside source files**: `UserService.cs` → `UserService.Test.cs`
@@ -107,3 +116,13 @@ dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64 --filter "FullyQualifi
 ✓ Co-locate tests beside source  
 ✓ Use dependency injection  
 ✓ Log entry/exit/errors
+
+# Language style rules
+- Always enforce repo analyzers: root `.editorconfig` plus any `stylecop.json`.
+- C# code follows StyleCop.Analyzers and Microsoft.CodeAnalysis.NetAnalyzers.
+- Markdown files wrap at 80 characters and use ATX headers with fenced code
+	blocks that include language tags.
+- YAML files indent two spaces and add comments for complex settings while
+	keeping keys clear.
+- PowerShell scripts use Verb-Noun names and prefer single-quoted literals
+	while documenting parameters and satisfying PSScriptAnalyzer.

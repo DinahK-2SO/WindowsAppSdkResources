@@ -61,37 +61,7 @@ Views/
 ```
 
 ## Code Samples
-
-**Complete working examples available:**
-- **Code-Behind**: [`MainPage.Sample.cs`](MainPage.Sample.cs) - MVVM pattern, minimal code-behind, DI
-- **UI Tests**: [`MainPage.Test.Sample.cs`](MainPage.Test.Sample.cs) - UI testing approaches and notes
-
-These samples demonstrate:
-- ✅ ViewModel injection via DI
-- ✅ Minimal code-behind (MVVM pattern)
-- ✅ Proper event handling
-- ✅ DataContext setup
-- ✅ Includes example XAML structure in comments
-
-**Quick template for new page:****
-```csharp
-public sealed partial class MainPage : Page
-{
-    public MainViewModel ViewModel { get; }
-
-    public MainPage()
-    {
-        this.InitializeComponent();
-        ViewModel = App.GetService<MainViewModel>();
-        DataContext = ViewModel;
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        // UI-specific initialization only
-    }
-}
-```
+- See [`MainPage.Sample.cs`](MainPage.Sample.cs) and [`MainPage.Sample.Test.cs`](MainPage.Sample.Test.cs) for full patterns.
 
 **Cross-layer references:**
 - ViewModels layer: [`../ViewModels/ViewModels.instructions.md`](../ViewModels/ViewModels.instructions.md)

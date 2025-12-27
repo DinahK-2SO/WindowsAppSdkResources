@@ -1,5 +1,11 @@
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using BlankApp.Models;
+using BlankApp.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Microsoft.UI.Xaml;
 
 namespace BlankApp.ViewModels;
 
@@ -15,7 +21,7 @@ public class MainViewModel : ObservableObject
     private string _title;
     private string _statusMessage;
     private bool _isLoading;
-    private User _currentUser;
+    private User? _currentUser;
 
     public MainViewModel(ILogger<MainViewModel> logger, IUserService userService)
     {
@@ -23,8 +29,8 @@ public class MainViewModel : ObservableObject
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         
         // Initialize commands
-        LoadDataCommand = new RelayCommand(async () => await LoadDataAsync(), () => !IsLoading);
-        RefreshCommand = new RelayCommand(async () => await RefreshAsync(), () => !IsLoading);
+        LoadDataCommand = new AsyncRelayCommand(LoadDataAsync, () => !IsLoading);
+        RefreshCommand = new AsyncRelayCommand(RefreshAsync, () => !IsLoading);
         
         // Set defaults
         _title = "Welcome";
@@ -59,7 +65,7 @@ public class MainViewModel : ObservableObject
         }
     }
 
-    public User CurrentUser
+    public User? CurrentUser
     {
         get => _currentUser;
         set => SetProperty(ref _currentUser, value);
@@ -69,8 +75,8 @@ public class MainViewModel : ObservableObject
 
     #region Commands
 
-    public IRelayCommand LoadDataCommand { get; }
-    public IRelayCommand RefreshCommand { get; }
+    public IAsyncRelayCommand LoadDataCommand { get; }
+    public IAsyncRelayCommand RefreshCommand { get; }
 
     #endregion
 
@@ -83,7 +89,7 @@ public class MainViewModel : ObservableObject
     public async Task LoadDataAsync()
     {
         _logger.LogTrace("Entering LoadDataAsync");
-        var sw = System.Diagnostics.Stopwatch.StartNew();
+        var sw = Stopwatch.StartNew();
         
         try
         {
@@ -146,26 +152,3 @@ public class MainViewModel : ObservableObject
     #endregion
 }
 
-/// <summary>
-/// Base class for ViewModels with INotifyPropertyChanged implementation.
-/// Demonstrates Single Responsibility Principle.
-/// </summary>
-public abstract class ObservableObject : INotifyPropertyChanged
-{
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-            return false;
-
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
-    }
-}
