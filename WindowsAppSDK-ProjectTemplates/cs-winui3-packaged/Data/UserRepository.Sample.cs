@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using BlankApp.Models;
 using Microsoft.Extensions.Logging;
 
@@ -79,15 +83,16 @@ public class UserRepository : IUserRepository
     /// </summary>
     public async Task<int> CreateAsync(User user)
     {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
         _logger.LogTrace("Entering CreateAsync for user: {UserName}", user.Name);
         var sw = System.Diagnostics.Stopwatch.StartNew();
         
         try
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
 
             // In real implementation:
             // _context.Users.Add(user);
@@ -114,15 +119,16 @@ public class UserRepository : IUserRepository
     /// </summary>
     public async Task UpdateAsync(User user)
     {
+        if (user == null)
+        {
+            throw new ArgumentNullException(nameof(user));
+        }
+
         _logger.LogTrace("Entering UpdateAsync for user id: {Id}", user.Id);
         var sw = System.Diagnostics.Stopwatch.StartNew();
         
         try
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
 
             // In real implementation:
             // _context.Users.Update(user);

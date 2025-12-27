@@ -53,37 +53,7 @@ dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~MainViewM
 - Base class: `ViewModelBase.cs` or `ObservableObject.cs`
 
 ## Code Samples
-
-**Complete working examples available:**
-- Production: [`MainViewModel.Sample.cs`](MainViewModel.Sample.cs)
-- Unit Tests: [`MainViewModel.Test.Sample.cs`](MainViewModel.Test.Sample.cs)
-
-**Quick template for new ViewModel:**
-```csharp
-public class {Name}ViewModel : ObservableObject
-{
-    private readonly ILogger<{Name}ViewModel> _logger;
-    private readonly I{Service}Service _service;
-    private string _title;
-
-    public string Title
-    {
-        get => _title;
-        set => SetProperty(ref _title, value);
-    }
-
-    public IRelayCommand LoadCommand { get; }
-
-    public {Name}ViewModel(ILogger<{Name}ViewModel> logger, I{Service}Service service)
-    {
-        _logger = logger;
-        _service = service;
-        LoadCommand = new RelayCommand(async () => await LoadAsync(), () => !IsLoading);
-    }
-    
-    // See MainViewModel.Sample.cs for complete implementation
-}
-```
+- See [`MainViewModel.Sample.cs`](MainViewModel.Sample.cs) and [`MainViewModel.Sample.Test.cs`](MainViewModel.Sample.Test.cs) for full patterns.
 
 **Cross-layer references:**
 - Services layer: [`../Services/Services.instructions.md`](../Services/Services.instructions.md)

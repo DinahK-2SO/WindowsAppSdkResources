@@ -29,32 +29,13 @@ Data/
 └── UserRepository.Test.cs  ← Test (co-located)
 ```
 
+## Code Samples
+- No dedicated test code in this folder; it only contains `BlankApp.Tests.csproj`.
+- See layer folders for source + test pairs (e.g., `Services/UserService.cs` and `Services/UserService.Test.cs`).
+
 ## Project Configuration
-
-### BlankApp.Tests.csproj (This Project)
-
-Includes `*.Test.cs` files from parent folders:
-
-```xml
-<ItemGroup>
-  <!-- Reference the main project (one level up) -->
-  <ProjectReference Include="..\BlankApp.csproj" />
-</ItemGroup>
-
-<ItemGroup>
-  <!-- Include test files from co-located layer folders -->
-  <Compile Include="..\Views\**\*.Test.cs" LinkBase="Views" Exclude="..\**\*.Sample.cs" />
-  <Compile Include="..\ViewModels\**\*.Test.cs" LinkBase="ViewModels" Exclude="..\**\*.Sample.cs" />
-  <Compile Include="..\Services\**\*.Test.cs" LinkBase="Services" Exclude="..\**\*.Sample.cs" />
-  <Compile Include="..\Data\**\*.Test.cs" LinkBase="Data" Exclude="..\**\*.Sample.cs" />
-  <Compile Include="..\Models\**\*.Test.cs" LinkBase="Models" Exclude="..\**\*.Sample.cs" />
-  <Compile Include="..\Infrastructure\**\*.Test.cs" LinkBase="Infrastructure" Exclude="..\**\*.Sample.cs" />
-</ItemGroup>
-```
-
-**Path Explanation:**
-- Each layer folder is explicitly included
-- Excludes `*.Sample.cs` (example files not compiled)
+- `BlankApp.Tests.csproj` includes all co-located `*.Test.cs` under the parent tree via a single glob.
+- Excludes `*.Sample.cs` and `*.Sample.Test.cs` so reference-only examples are not compiled.
 
 ## Running Tests
 

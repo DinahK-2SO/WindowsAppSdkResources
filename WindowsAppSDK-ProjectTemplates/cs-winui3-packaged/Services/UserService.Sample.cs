@@ -1,3 +1,7 @@
+using System;
+using System.Threading.Tasks;
+using BlankApp.Data;
+using BlankApp.Models;
 using Microsoft.Extensions.Logging;
 
 namespace BlankApp.Services;
@@ -8,7 +12,7 @@ namespace BlankApp.Services;
 /// </summary>
 public interface IUserService
 {
-    Task<User> GetUserAsync(int userId);
+    Task<User?> GetUserAsync(int userId);
     Task<bool> ValidateUserAsync(User user);
     Task<int> CreateUserAsync(User user);
 }
@@ -32,7 +36,7 @@ public class UserService : IUserService
     /// Retrieves a user by ID.
     /// Demonstrates logging (entry/exit/errors) and error handling.
     /// </summary>
-    public async Task<User> GetUserAsync(int userId)
+    public async Task<User?> GetUserAsync(int userId)
     {
         _logger.LogTrace("Entering GetUserAsync with userId: {UserId}", userId);
         var sw = System.Diagnostics.Stopwatch.StartNew();

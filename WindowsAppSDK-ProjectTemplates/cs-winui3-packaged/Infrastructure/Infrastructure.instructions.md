@@ -16,54 +16,28 @@ Configures logging with multiple destinations:
 - **Debug**: `{ProjectFolder}/logs/app-{date}.log`
 - **Release**: `%LocalAppData%/BlankApp/logs/app-{date}.log`
 
-## Usage
+## Code Samples
+- Logging configuration: [`LoggingConfiguration.cs`](LoggingConfiguration.cs) sets up Serilog file logging (4KB roll) and Windows Event Log.
 
-In `App.xaml.cs`:
-```csharp
-private void ConfigureServices(IServiceCollection services)
-{
-    // Add logging first
-    services.AddAppLogging();
-    
-    // Then add your services...
-    services.AddSingleton<IUserRepository, UserRepository>();
-    services.AddSingleton<IUserService, UserService>();
-    services.AddTransient<MainViewModel>();
-}
-```
+## App Startup Example
+- Wire global exception logging in `App.xaml.cs` using `services.AddAppLogging()` and hook:
+	- `App.UnhandledException`
+	- `TaskScheduler.UnobservedTaskException`
+	- `AppDomain.CurrentDomain.UnhandledException`
+	to log critical failures.
+
+## What Belongs Here
+- Logging configuration and providers
+- Dependency injection composition/root setup helpers
+- Cross-cutting concerns (telemetry, configuration bootstrapping, feature flags)
+
+## Usage
+- Register logging via `services.AddAppLogging()` in your app startup.
+- Keep cross-cutting helpers in this folder to avoid polluting feature layers.
 
 ## Logging Best Practices
-
-**In any class:**
-```csharp
-public class UserService : IUserService
-{
-    private readonly ILogger<UserService> _logger;
-
-    public UserService(ILogger<UserService> logger)
-    {
-        _logger = logger;
-    }
-
-    public async Task<User> GetUserAsync(int id)
-    {
-        _logger.LogTrace("Entering GetUserAsync with id: {Id}", id);
-        var sw = Stopwatch.StartNew();
-        
-        try
-        {
-            var user = await _repository.GetByIdAsync(id);
-            _logger.LogInformation("GetUserAsync completed in {Duration}ms", sw.ElapsedMilliseconds);
-            return user;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "GetUserAsync failed after {Duration}ms", sw.ElapsedMilliseconds);
-            throw;
-        }
-    }
-}
-```
+- Log entry/exit with duration and errors.
+- Use file + event log sinks as configured in logging setup.
 
 ## Log Levels
 
