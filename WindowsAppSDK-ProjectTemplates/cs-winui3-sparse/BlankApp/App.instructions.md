@@ -116,14 +116,18 @@ dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64 --filter "FullyQualifi
 
 **Dev/debug (no MSIX needed):**
 ```powershell
-Add-AppxPackage -Register "..\PackageIdentity\AppxManifest.xml" -ExternalLocation ".\bin\x64\Debug\net8.0-windows10.0.19041.0" -ForceApplicationShutdown
+$manifest = Resolve-Path "..\PackageIdentity\AppxManifest.xml"
+$ext = Resolve-Path ".\bin\x64\Debug\net8.0-windows10.0.19041.0"
+Add-AppxPackage -Register $manifest -ExternalLocation $ext -ForceApplicationShutdown
 ```
 (Run from BlankApp folder; ensure bin output exists by building first: `dotnet build -p:Platform=x64`)
 
 **Alternative (MSIX path):**
 - Run `..\PackageIdentity\BuildSparsePackage.ps1 -PackageName BlankApp -Publisher "CN=Dev Publisher"` then install with:
   ```powershell
-  Add-AppxPackage -Path "..\PackageIdentity\publish\Debug\x64\BlankApp.Sparse.msix" -ExternalLocation ".\bin\x64\Debug\net8.0-windows10.0.19041.0"
+	$msix = Resolve-Path "..\PackageIdentity\publish\Debug\x64\BlankApp.Sparse.msix"
+	$ext = Resolve-Path ".\bin\x64\Debug\net8.0-windows10.0.19041.0"
+	Add-AppxPackage -Path $msix -ExternalLocation $ext
   ```
 
 **Re-register only when manifest/identity changes; otherwise reuse the installed sparse identity.**
