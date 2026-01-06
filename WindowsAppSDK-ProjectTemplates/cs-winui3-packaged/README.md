@@ -25,7 +25,7 @@ BlankApp/
 │   ├── UserService.cs
 │   ├── UserService.Test.cs     ← Test beside source
 │   ├── UserService.Sample.cs   ← Production code example (not compiled)
-│   └── UserService.Test.Sample.cs ← Test code example (not compiled)
+│   └── UserService.Sample.Test.cs ← Test code example (not compiled)
 ├── Data/                       # Data Access
 │   ├── UserRepository.cs
 │   └── UserRepository.Test.cs  ← Test beside source
@@ -72,18 +72,19 @@ public class UserService : IUserService
 ### 2. Create Test File (Same Folder)
 ```csharp
 // Services/UserService.Test.cs
+[TestClass]
 public class UserServiceTests
 {
-    [Fact]
-    public async Task GetUserAsync_WhenExists_ShouldReturnUser()
-    {
-        // Test implementation
-    }
+  [TestMethod]
+  public async Task GetUserAsync_WhenExists_ShouldReturnUser()
+  {
+    // Test implementation
+  }
 }
 ```
 
 ### 3. Run Tests Incrementally
-```bash
+```pwsh
 # Run all tests
 dotnet test .\Tests\BlankApp.Tests.csproj
 
@@ -127,7 +128,7 @@ dotnet test .\Tests\BlankApp.Tests.csproj /p:CollectCoverage=true
 ```
 
 ### Verify Test Exclusion
-```pswh
+```pwsh
 # Should return nothing (tests excluded from shipping build)
 dotnet build BlankApp.csproj -v:d | Select-String "\.Test\.cs"
 ```
@@ -150,12 +151,12 @@ Both IDEs handle this structure perfectly:
 
 ### Main Project (BlankApp.csproj)
 - Microsoft.WindowsAppSDK
+- CommunityToolkit.Mvvm (MVVM helpers: ObservableObject, RelayCommand/AsyncRelayCommand)
 
 ### Test Project (BlankApp.Tests.csproj)
-- xUnit (testing framework)
-- NSubstitute (mocking)
-- FluentAssertions (test readability)
-- Coverlet (code coverage)
+- MSTest (testing framework)
+- Moq (mocking)
+- Coverage supported via dotnet test /p:CollectCoverage=true
 
 ## 📝 Naming Conventions
 

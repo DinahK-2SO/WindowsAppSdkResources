@@ -24,7 +24,7 @@ Configures logging with multiple destinations:
 	- `App.UnhandledException`
 	- `TaskScheduler.UnobservedTaskException`
 	- `AppDomain.CurrentDomain.UnhandledException`
-	o log critical failures.
+	to log critical failures.
 
 ## What Belongs Here
 - Logging configuration and providers
