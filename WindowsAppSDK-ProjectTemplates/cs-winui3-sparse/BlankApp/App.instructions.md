@@ -110,12 +110,23 @@ dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64 --filter "FullyQualifi
 ```
 
 ## Sparse identity quick start
-- Dev/debug (no MSIX needed):
-	`Add-AppxPackage -Register "PackageIdentity/AppxManifest.xml" -ExternalLocation "publish/Debug/x64" -ForceApplicationShutdown`
-	(Ensure `publish/Debug/x64` exists; use the PowerShell script if you need to create the publish folder.)
-- If you want the MSIX: run `PackageIdentity/BuildSparsePackage.ps1` then install with
-	`Add-AppxPackage -Path "publish/Debug/x64/<Name>.Sparse.msix" -ExternalLocation "publish/Debug/x64"`.
-- Re-register only when manifest/identity changes; otherwise reuse the installed sparse identity.
+
+**When to use sparse identity:**
+- You need package identity (unpackaged app) for package-only APIs (e.g., AppData folders, package-dependent features, Windows AI APIs: https://learn.microsoft.com/en-us/windows/ai/apis/)
+
+**Dev/debug (no MSIX needed):**
+```powershell
+Add-AppxPackage -Register "..\PackageIdentity\AppxManifest.xml" -ExternalLocation ".\bin\x64\Debug\net8.0-windows10.0.19041.0" -ForceApplicationShutdown
+```
+(Run from BlankApp folder; ensure bin output exists by building first: `dotnet build -p:Platform=x64`)
+
+**Alternative (MSIX path):**
+- Run `..\PackageIdentity\BuildSparsePackage.ps1 -PackageName BlankApp -Publisher "CN=Dev Publisher"` then install with:
+  ```powershell
+  Add-AppxPackage -Path "..\PackageIdentity\publish\Debug\x64\BlankApp.Sparse.msix" -ExternalLocation ".\bin\x64\Debug\net8.0-windows10.0.19041.0"
+  ```
+
+**Re-register only when manifest/identity changes; otherwise reuse the installed sparse identity.**
 
 ## Summary
 
