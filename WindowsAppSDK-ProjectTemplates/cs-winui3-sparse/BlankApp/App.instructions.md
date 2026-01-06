@@ -125,7 +125,7 @@ Add-AppxPackage -Register $manifest -ExternalLocation $ext -ForceApplicationShut
 **Alternative (MSIX path):**
 - Run `..\PackageIdentity\BuildSparsePackage.ps1 -PackageName BlankApp -Publisher "CN=Dev Publisher"` then install with:
   ```powershell
-	$msix = Resolve-Path "..\PackageIdentity\publish\Debug\x64\BlankApp.Sparse.msix"
+	$msix = Resolve-Path "..\PackageIdentity\publish\Release\x64\BlankApp.Sparse.msix"
 	$ext = Resolve-Path ".\bin\x64\Debug\net8.0-windows10.0.19041.0"
 	Add-AppxPackage -Path $msix -ExternalLocation $ext
   ```
