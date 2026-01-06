@@ -11,6 +11,9 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <Nullable>enable</Nullable>
+    <!-- Package the Windows App SDK (WinAppRuntime) native components with the app,
+     rather than relying on a framework-installed Windows App SDK runtime. -->
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <IncludeSamples Condition="'$(IncludeSamples)' == ''">false</IncludeSamples>
     <DefineConstants Condition="'$(IncludeSamples)' == 'true'">$(DefineConstants);INCLUDE_SAMPLES</DefineConstants>
   </PropertyGroup>
