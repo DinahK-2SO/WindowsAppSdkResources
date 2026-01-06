@@ -36,11 +36,6 @@ public sealed partial class MainPage : Page
         _logger.LogDebug("MainPage constructed");
     }
 
-    // Sample stub for XAML-less compilation when samples are included
-    private void InitializeComponent()
-    {
-    }
-
     /// <summary>
     /// Handles the page Loaded event.
     /// Only UI-specific initialization should be here.

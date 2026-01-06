@@ -34,7 +34,7 @@ This project uses **layered architecture** with **co-located tests**. Before cod
 Each layer has detailed instructions - **READ BEFORE CODING!**
 
 | Layer | Purpose | Depends On | Instructions |
-|-------|---------|-----------|
+|-------|---------|-----------|-----------|
 | **Infrastructure** | Logging, DI setup | Nothing | [`Infrastructure.instructions.md`](Infrastructure/Infrastructure.instructions.md) |
 | **Views** | UI (XAML, code-behind) | ViewModels | [`Views.instructions.md`](Views/Views.instructions.md) |
 | **ViewModels** | UI state, commands | Services + Models | [`ViewModels.instructions.md`](ViewModels/ViewModels.instructions.md) |
