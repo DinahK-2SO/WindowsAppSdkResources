@@ -49,7 +49,7 @@ Each layer has detailed instructions - **READ BEFORE CODING!**
 
 ### DI and Logging Setup (App.xaml.cs)
 - Configure services with `AddAppLogging()` from Infrastructure.
-- Register sample implementations for DI: `IUserRepository` → `UserRepository`, `IUserService` → `UserService`, and `MainViewModel`.
+- Register sample implementations for DI: `IUserRepositorySample` → `UserRepositorySample`, `IUserServiceSample` → `UserServiceSample`, and `MainViewModelSample`.
 - Use `App.GetService<T>()` to resolve dependencies (e.g., in pages to get `MainViewModel`).
 - Global exception hooks log critical failures (UI, task, AppDomain).
 

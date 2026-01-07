@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using BlankApp.Models;
@@ -13,17 +14,19 @@ namespace BlankApp.ViewModels;
 /// ViewModel for the main page.
 /// Demonstrates MVVM pattern, property change notifications, and command implementation.
 /// </summary>
-public class MainViewModel : ObservableObject
+public class MainViewModelSample : ObservableObject
 {
-    private readonly ILogger<MainViewModel> _logger;
-    private readonly IUserService _userService;
+    private readonly ILogger<MainViewModelSample> _logger;
+    private readonly IUserServiceSample _userService;
     
     private string _title;
     private string _statusMessage;
     private bool _isLoading;
-    private User? _currentUser;
+    private ObservableCollection<UserSample> _users;
+    private UserSample? _selectedUser;
+    private string _nameInput;
 
-    public MainViewModel(ILogger<MainViewModel> logger, IUserService userService)
+    public MainViewModelSample(ILogger<MainViewModelSample> logger, IUserServiceSample userService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
@@ -31,10 +34,15 @@ public class MainViewModel : ObservableObject
         // Initialize commands
         LoadDataCommand = new AsyncRelayCommand(LoadDataAsync, () => !IsLoading);
         RefreshCommand = new AsyncRelayCommand(RefreshAsync, () => !IsLoading);
+        CreateSampleUserCommand = new AsyncRelayCommand(CreateSampleUserAsync, () => !IsLoading);
+        UpdateUserCommand = new AsyncRelayCommand(UpdateUserAsync, () => !IsLoading && SelectedUser != null);
+        DeleteUserCommand = new AsyncRelayCommand(DeleteUserAsync, () => !IsLoading && SelectedUser != null);
         
         // Set defaults
         _title = "Welcome";
         _statusMessage = string.Empty;
+        _users = new ObservableCollection<UserSample>();
+        _nameInput = string.Empty;
     }
 
     #region Properties
@@ -61,14 +69,36 @@ public class MainViewModel : ObservableObject
                 // Notify commands to re-evaluate CanExecute
                 LoadDataCommand.NotifyCanExecuteChanged();
                 RefreshCommand.NotifyCanExecuteChanged();
+                UpdateUserCommand.NotifyCanExecuteChanged();
+                DeleteUserCommand.NotifyCanExecuteChanged();
             }
         }
     }
 
-    public User? CurrentUser
+    public ObservableCollection<UserSample> Users
     {
-        get => _currentUser;
-        set => SetProperty(ref _currentUser, value);
+        get => _users;
+        set => SetProperty(ref _users, value);
+    }
+
+    public UserSample? SelectedUser
+    {
+        get => _selectedUser;
+        set
+        {
+            if (SetProperty(ref _selectedUser, value))
+            {
+                NameInput = value?.Name ?? string.Empty;
+                UpdateUserCommand.NotifyCanExecuteChanged();
+                DeleteUserCommand.NotifyCanExecuteChanged();
+            }
+        }
+    }
+
+    public string NameInput
+    {
+        get => _nameInput;
+        set => SetProperty(ref _nameInput, value);
     }
 
     #endregion
@@ -77,14 +107,16 @@ public class MainViewModel : ObservableObject
 
     public IAsyncRelayCommand LoadDataCommand { get; }
     public IAsyncRelayCommand RefreshCommand { get; }
+    public IAsyncRelayCommand CreateSampleUserCommand { get; }
+    public IAsyncRelayCommand UpdateUserCommand { get; }
+    public IAsyncRelayCommand DeleteUserCommand { get; }
 
     #endregion
 
     #region Methods
 
     /// <summary>
-    /// Loads user data from the service.
-    /// Demonstrates async operations, error handling, and property updates.
+    /// Loads users from the service.
     /// </summary>
     public async Task LoadDataAsync()
     {
@@ -96,18 +128,20 @@ public class MainViewModel : ObservableObject
             IsLoading = true;
             StatusMessage = "Loading...";
 
-            // Call service layer
-            var user = await _userService.GetUserAsync(1);
-            
-            if (user != null)
+            var users = await _userService.GetUsersAsync();
+            Users = new ObservableCollection<UserSample>(users);
+
+            if (Users.Count > 0)
             {
-                CurrentUser = user;
-                Title = $"Welcome, {user.Name}!";
+                SelectedUser = Users[0];
+                Title = $"Users ({Users.Count})";
                 StatusMessage = "Data loaded successfully";
             }
             else
             {
-                StatusMessage = "User not found";
+                SelectedUser = null;
+                Title = "Users";
+                StatusMessage = "No users yet";
             }
             
             _logger.LogInformation("LoadDataAsync completed in {Duration}ms", 
@@ -132,21 +166,118 @@ public class MainViewModel : ObservableObject
     {
         _logger.LogTrace("Entering RefreshAsync");
         
-        // Clear current data
-        CurrentUser = null;
-        Title = "Welcome";
-        
-        // Reload
+        SelectedUser = null;
+        Title = "Users";
         await LoadDataAsync();
     }
 
-    /// <summary>
-    /// Validates user input.
-    /// Demonstrates validation logic in ViewModel.
-    /// </summary>
     public bool ValidateInput(string input)
     {
         return !string.IsNullOrWhiteSpace(input);
+    }
+
+    public async Task CreateSampleUserAsync()
+    {
+        _logger.LogTrace("Entering CreateSampleUserAsync");
+        var sw = Stopwatch.StartNew();
+
+        try
+        {
+            IsLoading = true;
+            StatusMessage = "Creating user...";
+
+            var name = string.IsNullOrWhiteSpace(NameInput) ? "Sample User" : NameInput.Trim();
+
+            var sample = new UserSample
+            {
+                Name = name,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _userService.CreateUserAsync(sample);
+
+            StatusMessage = "User created";
+
+            await LoadDataAsync();
+
+            _logger.LogInformation("CreateSampleUserAsync completed in {Duration}ms", sw.ElapsedMilliseconds);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "CreateSampleUserAsync failed after {Duration}ms", sw.ElapsedMilliseconds);
+            StatusMessage = "Error creating sample user";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public async Task UpdateUserAsync()
+    {
+        _logger.LogTrace("Entering UpdateUserAsync");
+        var sw = Stopwatch.StartNew();
+
+        try
+        {
+            if (SelectedUser == null)
+            {
+                return;
+            }
+
+            IsLoading = true;
+            StatusMessage = "Updating user...";
+
+            SelectedUser.Name = string.IsNullOrWhiteSpace(NameInput) ? SelectedUser.Name : NameInput.Trim();
+            SelectedUser.UpdatedAt = DateTime.UtcNow;
+
+            await _userService.UpdateUserAsync(SelectedUser);
+
+            StatusMessage = "User updated";
+
+            await LoadDataAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "UpdateUserAsync failed after {Duration}ms", sw.ElapsedMilliseconds);
+            StatusMessage = "Error updating user";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public async Task DeleteUserAsync()
+    {
+        _logger.LogTrace("Entering DeleteUserAsync");
+        var sw = Stopwatch.StartNew();
+
+        try
+        {
+            if (SelectedUser == null)
+            {
+                return;
+            }
+
+            IsLoading = true;
+            StatusMessage = "Deleting user...";
+
+            await _userService.DeleteUserAsync(SelectedUser.Id);
+
+            StatusMessage = "User deleted";
+
+            await LoadDataAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "DeleteUserAsync failed after {Duration}ms", sw.ElapsedMilliseconds);
+            StatusMessage = "Error deleting user";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     #endregion

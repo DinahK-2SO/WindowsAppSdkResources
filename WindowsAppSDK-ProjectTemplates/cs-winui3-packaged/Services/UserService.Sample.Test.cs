@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using BlankApp.Data;
 using BlankApp.Models;
+using BlankApp.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -13,18 +14,18 @@ namespace BlankApp.Services.Tests;
 /// Test file is co-located with source: UserService.Test.cs beside UserService.cs
 /// </summary>
 [TestClass]
-public class UserServiceTests
+public class UserServiceSampleTests
 {
-    private Mock<ILogger<UserService>> _mockLogger = null!;
-    private Mock<IUserRepository> _mockUserRepository = null!;
-    private UserService _sut = null!; // System Under Test
+    private Mock<ILogger<UserServiceSample>> _mockLogger = null!;
+    private Mock<IUserRepositorySample> _mockUserRepository = null!;
+    private UserServiceSample _sut = null!; // System Under Test
 
     [TestInitialize]
     public void Setup()
     {
-        _mockLogger = new Mock<ILogger<UserService>>();
-        _mockUserRepository = new Mock<IUserRepository>();
-        _sut = new UserService(_mockLogger.Object, _mockUserRepository.Object);
+        _mockLogger = new Mock<ILogger<UserServiceSample>>();
+        _mockUserRepository = new Mock<IUserRepositorySample>();
+        _sut = new UserServiceSample(_mockLogger.Object, _mockUserRepository.Object);
     }
 
     [TestMethod]
@@ -32,7 +33,7 @@ public class UserServiceTests
     {
         // Arrange
         var userId = 1;
-        var expectedUser = new User { Id = userId, Name = "John Doe" };
+        var expectedUser = new UserSample { Id = userId, Name = "John Doe" };
         _mockUserRepository.Setup(r => r.GetByIdAsync(userId))
             .ReturnsAsync(expectedUser);
 
@@ -52,7 +53,7 @@ public class UserServiceTests
         // Arrange
         var userId = 999;
         _mockUserRepository.Setup(r => r.GetByIdAsync(userId))
-            .ReturnsAsync((User?)null);
+            .ReturnsAsync((UserSample?)null);
 
         // Act
         var result = await _sut.GetUserAsync(userId);

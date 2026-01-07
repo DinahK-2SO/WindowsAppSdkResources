@@ -11,12 +11,12 @@ namespace BlankApp.Views.Tests;
 [TestClass]
 public class MainPageTests
 {
-    private Mock<MainViewModel> _mockViewModel = null!;
+    private Mock<MainViewModelSample> _mockViewModel = null!;
 
     [TestInitialize]
     public void Setup()
     {
-        _mockViewModel = new Mock<MainViewModel>();
+        _mockViewModel = new Mock<MainViewModelSample>();
     }
 
     [TestMethod]

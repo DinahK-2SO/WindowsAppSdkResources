@@ -63,9 +63,9 @@ namespace BlankApp
 
             // Register application services and dependencies for DI
 #if INCLUDE_SAMPLES
-            services.AddSingleton<BlankApp.Data.IUserRepository, BlankApp.Data.UserRepository>();
-            services.AddSingleton<BlankApp.Services.IUserService, BlankApp.Services.UserService>();
-            services.AddTransient<BlankApp.ViewModels.MainViewModel>();
+            services.AddSingleton<BlankApp.Data.IUserRepositorySample, BlankApp.Data.UserRepositorySample>();
+            services.AddSingleton<BlankApp.Services.IUserServiceSample, BlankApp.Services.UserServiceSample>();
+            services.AddTransient<BlankApp.ViewModels.MainViewModelSample>();
 #endif
 
             return services.BuildServiceProvider();

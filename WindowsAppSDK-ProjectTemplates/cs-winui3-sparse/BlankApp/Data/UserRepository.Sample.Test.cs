@@ -13,23 +13,23 @@ namespace BlankApp.Data.Tests;
 /// Demonstrates data layer testing with proper mocking.
 /// </summary>
 [TestClass]
-public class UserRepositoryTests
+public class UserRepositorySampleTests
 {
-    private Mock<ILogger<UserRepository>> _mockLogger = null!;
-    private UserRepository _sut = null!; // System Under Test
+    private Mock<ILogger<UserRepositorySample>> _mockLogger = null!;
+    private UserRepositorySample _sut = null!; // System Under Test
 
     [TestInitialize]
     public void Setup()
     {
-        _mockLogger = new Mock<ILogger<UserRepository>>();
-        _sut = new UserRepository(_mockLogger.Object);
+        _mockLogger = new Mock<ILogger<UserRepositorySample>>();
+        _sut = new UserRepositorySample(_mockLogger.Object);
     }
 
     [TestMethod]
     public async Task GetByIdAsync_WhenUserExists_ShouldReturnUser()
     {
         // Arrange
-        var user = new User { Id = 1, Name = "John Doe", Email = "john@example.com", Age = 30 };
+        var user = new UserSample { Id = 1, Name = "John Doe", CreatedAt = DateTime.UtcNow };
         await _sut.CreateAsync(user);
 
         // Act
@@ -55,7 +55,7 @@ public class UserRepositoryTests
     public async Task CreateAsync_WhenValidUser_ShouldAssignIdAndReturnIt()
     {
         // Arrange
-        var user = new User { Name = "Jane Doe", Email = "jane@example.com", Age = 25 };
+        var user = new UserSample { Name = "Jane Doe", CreatedAt = DateTime.UtcNow };
 
         // Act
         var userId = await _sut.CreateAsync(user);
@@ -77,6 +77,6 @@ public class UserRepositoryTests
     public void Constructor_WhenLoggerIsNull_ShouldThrowArgumentNullException()
     {
         // Act & Assert
-        Assert.ThrowsException<ArgumentNullException>(() => new UserRepository(null!));
+        Assert.ThrowsException<ArgumentNullException>(() => new UserRepositorySample(null!));
     }
 }
