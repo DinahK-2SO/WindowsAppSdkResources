@@ -10,8 +10,8 @@ using Moq;
 namespace BlankApp.Services.Tests;
 
 /// <summary>
-/// Unit tests for UserService class.
-/// Test file is co-located with source: UserService.Test.cs beside UserService.cs
+/// Unit tests for <see cref="UserServiceSample"/> sample service.
+/// Test file is co-located with source: UserService.Sample.Test.cs beside UserService.Sample.cs
 /// </summary>
 [TestClass]
 public class UserServiceSampleTests

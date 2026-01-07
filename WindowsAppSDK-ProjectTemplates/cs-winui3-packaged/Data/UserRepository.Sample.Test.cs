@@ -9,7 +9,7 @@ using Moq;
 namespace BlankApp.Data.Tests;
 
 /// <summary>
-/// Unit tests for UserRepository.
+/// Unit tests for <see cref="UserRepositorySample"/> sample repository.
 /// Demonstrates data layer testing with proper mocking.
 /// </summary>
 [TestClass]

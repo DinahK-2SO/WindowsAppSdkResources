@@ -34,7 +34,7 @@ _logger.LogError(ex, "{Method} failed", nameof(LoadDataAsync));
 
 **Tests are CO-LOCATED with source files:**
 - Test file location: `ViewModels/{ViewModelName}.Test.cs` (SAME FOLDER as source)
-- Example: `MainViewModel.cs` → `MainViewModel.Test.cs`
+- Example: `MainViewModel.Sample.cs` → `MainViewModel.Sample.Test.cs`
 - Test class name: `{ViewModelName}Tests` (with 's' suffix)
 - Mock all Service interfaces
 - Test property changes, command execution, validation logic
@@ -45,7 +45,7 @@ _logger.LogError(ex, "{Method} failed", nameof(LoadDataAsync));
 dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~ViewModels"
 
 # Run specific ViewModel tests
-dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~MainViewModel"
+dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~MainViewModelSample"
 ```
 
 ## File Naming Conventions
