@@ -49,15 +49,15 @@ Each layer has detailed instructions - **READ BEFORE CODING!**
 
 ### DI and Logging Setup (App.xaml.cs)
 - Configure services with `AddAppLogging()` from Infrastructure.
-- Register sample implementations for DI: `IUserRepository` → `UserRepository`, `IUserService` → `UserService`, and `MainViewModel`.
-- Use `App.GetService<T>()` to resolve dependencies (e.g., in pages to get `MainViewModel`).
+- Register sample implementations for DI: `IUserRepositorySample` → `UserRepositorySample`, `IUserServiceSample` → `UserServiceSample`, and `MainViewModelSample`.
+- Use `App.GetService<T>()` to resolve dependencies (e.g., in pages to get `MainViewModelSample`).
 - Global exception hooks log critical failures (UI, task, AppDomain).
 
 ## 🧪 Co-located Testing
 
-Tests **beside source files**: `UserService.cs` → `UserService.Test.cs`
+Tests **beside source files**: `UserService.Sample.cs` → `UserService.Sample.Test.cs`
 
-**Run:** `dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserService"`
+**Run:** `dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserServiceSample"`
 
 ## 📝 Logging Requirements
 
@@ -106,7 +106,7 @@ dotnet build BlankApp.csproj -p:Platform=x64
 dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64
 
 # Run specific class tests
-dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64 --filter "FullyQualifiedName~UserService"
+dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64 --filter "FullyQualifiedName~UserServiceSample"
 ```
 
 ## Summary

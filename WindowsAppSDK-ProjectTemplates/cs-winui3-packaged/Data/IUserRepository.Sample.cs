@@ -8,12 +8,11 @@ namespace BlankApp.Data;
 /// Repository interface for user data access operations.
 /// Following Repository Pattern and Dependency Inversion Principle.
 /// </summary>
-public interface IUserRepository
+public interface IUserRepositorySample
 {
-    Task<User?> GetByIdAsync(int id);
-    Task<IEnumerable<User>> GetAllAsync();
-    Task<int> CreateAsync(User user);
-    Task UpdateAsync(User user);
+    Task<UserSample?> GetByIdAsync(int id);
+    Task<IEnumerable<UserSample>> GetAllAsync();
+    Task<int> CreateAsync(UserSample user);
+    Task UpdateAsync(UserSample user);
     Task DeleteAsync(int id);
-    Task<User?> GetByEmailAsync(string email);
 }

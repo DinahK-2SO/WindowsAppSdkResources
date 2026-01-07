@@ -12,13 +12,13 @@ namespace BlankApp.Data;
 /// Demonstrates proper logging, error handling, and data operations.
 /// In real implementation, this would use Entity Framework or similar.
 /// </summary>
-public class UserRepository : IUserRepository
+public class UserRepositorySample : IUserRepositorySample
 {
-    private readonly ILogger<UserRepository> _logger;
+    private readonly ILogger<UserRepositorySample> _logger;
     // In real implementation: private readonly AppDbContext _context;
-    private static readonly List<User> _inMemoryStore = new(); // Demo only
+    private static readonly List<UserSample> _inMemoryStore = new(); // Demo only
 
-    public UserRepository(ILogger<UserRepository> logger)
+    public UserRepositorySample(ILogger<UserRepositorySample> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
@@ -26,7 +26,7 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Retrieves a user by their ID.
     /// </summary>
-    public async Task<User?> GetByIdAsync(int id)
+    public async Task<UserSample?> GetByIdAsync(int id)
     {
         _logger.LogTrace("Entering GetByIdAsync with id: {Id}", id);
         var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -54,7 +54,7 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Retrieves all users.
     /// </summary>
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<UserSample>> GetAllAsync()
     {
         _logger.LogTrace("Entering GetAllAsync");
         var sw = System.Diagnostics.Stopwatch.StartNew();
@@ -81,7 +81,7 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Creates a new user in the database.
     /// </summary>
-    public async Task<int> CreateAsync(User user)
+    public async Task<int> CreateAsync(UserSample user)
     {
         if (user == null)
         {
@@ -117,7 +117,7 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Updates an existing user.
     /// </summary>
-    public async Task UpdateAsync(User user)
+    public async Task UpdateAsync(UserSample user)
     {
         if (user == null)
         {
@@ -193,27 +193,5 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Retrieves a user by their email address.
     /// </summary>
-    public async Task<User?> GetByEmailAsync(string email)
-    {
-        _logger.LogTrace("Entering GetByEmailAsync with email: {Email}", email);
-        var sw = System.Diagnostics.Stopwatch.StartNew();
-        
-        try
-        {
-            // In real implementation:
-            // var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            
-            var user = _inMemoryStore.FirstOrDefault(u => u.Email == email);
-            
-            _logger.LogInformation("GetByEmailAsync completed in {Duration}ms, found: {Found}", 
-                sw.ElapsedMilliseconds, user != null);
-            
-            return await Task.FromResult(user);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "GetByEmailAsync failed after {Duration}ms", sw.ElapsedMilliseconds);
-            throw;
-        }
-    }
+    // Email lookup omitted in simplified sample model
 }

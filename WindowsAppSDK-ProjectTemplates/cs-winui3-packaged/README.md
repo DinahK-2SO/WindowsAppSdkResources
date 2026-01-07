@@ -4,7 +4,7 @@ This template implements a **layered architecture** with **co-located test files
 
 ## 🎯 Key Features
 
-✅ **Co-located Tests**: Test files beside source files (`UserService.cs` → `UserService.Test.cs`)  
+✅ **Co-located Tests**: Test files beside source files (`UserService.Sample.cs` → `UserService.Sample.Test.cs`)  
 ✅ **Separate Build Projects**: Shipping build excludes tests automatically  
 ✅ **SOLID/DRY/KISS Principles**: Enforced through Copilot instructions  
 ✅ **Incremental Testing**: Automatic test discovery and execution  
@@ -19,18 +19,16 @@ BlankApp/
 │   ├── MainPage.xaml.cs
 │   └── MainPage.Test.cs        ← Test beside source
 ├── ViewModels/                 # Presentation Logic
-│   ├── MainViewModel.cs
-│   └── MainViewModel.Test.cs   ← Test beside source
+│   ├── MainViewModel.Sample.cs
+│   └── MainViewModel.Sample.Test.cs   ← Test beside source (example)
 ├── Services/                   # Business Logic
-│   ├── UserService.cs
-│   ├── UserService.Test.cs     ← Test beside source
-│   ├── UserService.Sample.cs   ← Production code example (not compiled)
-│   └── UserService.Sample.Test.cs ← Test code example (not compiled)
+│   ├── UserService.Sample.cs
+│   └── UserService.Sample.Test.cs ← Test beside source (example)
 ├── Data/                       # Data Access
-│   ├── UserRepository.cs
-│   └── UserRepository.Test.cs  ← Test beside source
+│   ├── UserRepository.Sample.cs
+│   └── UserRepository.Sample.Test.cs  ← Test beside source (example)
 ├── Models/                     # Domain Models
-│   └── User.cs
+│   └── User.Sample.cs
 ├── Tests/
 │   └── BlankApp.Tests.csproj  # Test project (references parent *.Test.cs)
 └── BlankApp.csproj            # Shipping (excludes *.Test.cs)
@@ -62,8 +60,8 @@ Includes only `*.Test.cs` files from parent folders:
 
 ### 1. Create Source File
 ```csharp
-// Services/UserService.cs
-public class UserService : IUserService
+// Services/UserService.Sample.cs
+public class UserServiceSample : IUserServiceSample
 {
     // Implementation
 }
@@ -71,9 +69,9 @@ public class UserService : IUserService
 
 ### 2. Create Test File (Same Folder)
 ```csharp
-// Services/UserService.Test.cs
+// Services/UserService.Sample.Test.cs
 [TestClass]
-public class UserServiceTests
+public class UserServiceSampleTests
 {
   [TestMethod]
   public async Task GetUserAsync_WhenExists_ShouldReturnUser()
@@ -89,7 +87,7 @@ public class UserServiceTests
 dotnet test .\Tests\BlankApp.Tests.csproj
 
 # Run tests for specific class (incremental)
-dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserService"
+dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserServiceSample"
 ```
 
 ## 📖 Layer Instructions
@@ -162,9 +160,9 @@ Both IDEs handle this structure perfectly:
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| Source File | `{ClassName}.cs` | `UserService.cs` |
-| Test File | `{ClassName}.Test.cs` | `UserService.Test.cs` |
-| Test Class | `{ClassName}Tests` | `UserServiceTests` |
+| Source File | `{ClassName}.cs` | `UserServiceSample.cs` |
+| Test File | `{ClassName}.Test.cs` | `UserServiceSample.Test.cs` |
+| Test Class | `{ClassName}Tests` | `UserServiceSampleTests` |
 | Test Method | `{Method}_{Scenario}_{ExpectedBehavior}` | `GetUserAsync_WhenExists_ShouldReturnUser` |
 
 ## 🎯 Benefits

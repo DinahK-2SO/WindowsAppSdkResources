@@ -21,17 +21,17 @@ Views/
 └── MainPage.Test.cs        ← Test (co-located)
 
 Services/
-├── UserService.cs          ← Source
-└── UserService.Test.cs     ← Test (co-located)
+├── UserService.Sample.cs          ← Source (example, excluded from build)
+└── UserService.Sample.Test.cs     ← Test (co-located example)
 
 Data/
-├── UserRepository.cs       ← Source
-└── UserRepository.Test.cs  ← Test (co-located)
+├── UserRepository.Sample.cs       ← Source (example, excluded from build)
+└── UserRepository.Sample.Test.cs  ← Test (co-located example)
 ```
 
 ## Code Samples
 - No dedicated test code in this folder; it only contains `BlankApp.Tests.csproj`.
-- See layer folders for source + test pairs (e.g., `Services/UserService.cs` and `Services/UserService.Test.cs`).
+- See layer folders for source + test pairs (e.g., `Services/UserService.Sample.cs` and `Services/UserService.Sample.Test.cs`).
 
 ## Project Configuration
 - `BlankApp.Tests.csproj` includes all co-located `*.Test.cs` under the parent tree via a single glob.
@@ -48,10 +48,10 @@ Data/
 dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64
 
 # Run tests for specific class (incremental)
-dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserService"
+dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserServiceSample"
 
 # Run specific test method
-dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserServiceTests.GetUserAsync_WhenExists_ShouldReturnUser"
+dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserServiceSampleTests.GetUserAsync_WhenExists_ShouldReturnUser"
 ```
 
 ### From Tests Folder
@@ -89,9 +89,9 @@ BlankApp/
 
 ## Adding New Tests
 
-1. **Create source**: `Services/UserService.cs`
-2. **Create test (same folder)**: `Services/UserService.Test.cs`
-3. **Run**: `dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64 --filter "FullyQualifiedName~UserService"`
+1. **Create source**: `Services/UserService.Sample.cs`
+2. **Create test (same folder)**: `Services/UserService.Sample.Test.cs`
+3. **Run**: `dotnet test .\Tests\BlankApp.Tests.csproj -p:Platform=x64 --filter "FullyQualifiedName~UserServiceSample"`
 
 ## Dependencies
 

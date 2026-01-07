@@ -37,7 +37,7 @@ _logger.LogError(ex, "{Method} failed after {Duration}ms", nameof(Method), sw.El
 
 **Tests are CO-LOCATED with source files:**
 - Test file location: `Services/{ServiceName}.Test.cs` (SAME FOLDER as source)
-- Example: `UserService.cs` → `UserService.Test.cs`
+- Example: `UserService.Sample.cs` → `UserService.Sample.Test.cs`
 - Test class name: `{ServiceName}Tests` (with 's' suffix)
 - Mock all Data layer repository interfaces
 - Test business logic, validation, error handling
@@ -48,7 +48,7 @@ _logger.LogError(ex, "{Method} failed after {Duration}ms", nameof(Method), sw.El
 dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~Services"
 
 # Run specific service tests
-dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserService"
+dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~UserServiceSample"
 ```
 
 ## File Naming Conventions

@@ -22,7 +22,7 @@ Repositories, database contexts, API clients, and data mapping.
 
 ## Testing (Co-located)
 - Location: `Data/{RepositoryName}.Test.cs` (SAME FOLDER)
-- Example: `UserRepository.cs` → `UserRepository.Test.cs`
+- Example: `UserRepository.Sample.cs` → `UserRepository.Sample.Test.cs`
 - Mock: Use in-memory database or fakes
 - Run: `dotnet test .\Tests\BlankApp.Tests.csproj --filter "FullyQualifiedName~Data"`
 
