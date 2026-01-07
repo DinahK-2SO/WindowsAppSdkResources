@@ -1,5 +1,5 @@
 ---
-mode: 'agent'
+agent: 'agent'
 model: GPT-5.1-Codex-Max
 description: 'Generate an 80-character git commit title for the local diff.'
 ---
@@ -11,6 +11,11 @@ description: 'Generate an 80-character git commit title for the local diff.'
    ```@terminal
    git diff HEAD
    ```
-2. From that diff, identify the dominant area (reference key paths like `src/modules/*`, `doc/devdocs/**`, etc.), the type of change (bug fix, docs update, config tweak), and any notable impact.
-3. Draft a concise, imperative commit title summarizing the dominant change. Keep it plain ASCII, <= 80 characters, and avoid trailing punctuation. Mention the primary component when obvious (for example `FancyZones:` or `Docs:`).
+2. Identify the dominant area from the diff (e.g., folder paths, module names), the type of change (bug fix, feature, docs update, refactor, config), and any notable impact.
+3. Draft a concise, imperative commit title summarizing the dominant change. Keep it plain ASCII, <= 80 characters, and avoid trailing punctuation. Prefix with the primary component when obvious (e.g., `Services:`, `Docs:`, `ViewModels:`).
 4. Respond with only the final commit title on a single line so it can be pasted directly into `git commit`.
+
+**Best practices:**
+- Use imperative mood ("Add feature" not "Added feature").
+- Be specific: mention what changed and where.
+- Avoid vague words like "fix stuff" or "update code".

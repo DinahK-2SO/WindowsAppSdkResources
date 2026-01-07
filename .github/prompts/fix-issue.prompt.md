@@ -1,5 +1,5 @@
 ---
-mode: 'agent'
+agent: 'agent'
 model: GPT-5.1-Codex-Max
 description: "Execute the fix for a GitHub issue using the previously generated implementation plan. Apply code & tests directly in the repo. Output only a PR description (and optional manual steps)."
 ---
@@ -62,8 +62,9 @@ For **#{{issue_number}}**:
 # IMPORTANT
 - Apply code and tests directly; do not produce patch files.
 - Follow implementation-plan.md as the source of truth.
+- Respect repository instruction files (e.g., layer guides like `*.instructions.md`) for conventions.
 - Insert comments for human review where a decision or input is required.
-- Use repository conventions and deterministic, minimal changes.
+- Use deterministic, minimal changes that align with existing patterns.
 
 # FINALIZE
 - Write pr-description.md

@@ -5,11 +5,11 @@ using Moq;
 namespace BlankApp.Views.Tests;
 
 /// <summary>
-/// Unit tests for MainPage code-behind.
+/// Unit tests for MainPageSample code-behind.
 /// Demonstrates UI testing approach with mocked ViewModels.
 /// </summary>
 [TestClass]
-public class MainPageTests
+public class MainPageSampleTests
 {
     private Mock<MainViewModelSample> _mockViewModel = null!;
 

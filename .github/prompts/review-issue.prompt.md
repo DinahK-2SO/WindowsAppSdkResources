@@ -1,7 +1,7 @@
 ---
-mode: 'agent'
+agent: 'agent'
 model: GPT-5.1-Codex-Max
-description: "You are github issue review and planning expertise, Score (0–100) and write one Implementation Plan. Outputs: overview.md, implementation-plan.md."
+description: "GitHub issue review and planning: score (0–100) and generate an Implementation Plan. Outputs: overview.md, implementation-plan.md."
 ---
 
 # GOAL
@@ -10,7 +10,7 @@ For **#{{issue_number}}** produce:
 2) `Generated Files/issueReview/{{issue_number}}/implementation-plan.md`
 
 ## Inputs
-  figure out from the prompt on the 
+Figure out from the prompt on the {{issue_number}}
 
 # CONTEXT (brief)
 Ground evidence using `gh issue view {{issue_number}} --json number,title,body,author,createdAt,updatedAt,state,labels,milestone,reactions,comments,linkedPullRequests`, and download the image to understand the context of the issue more.
@@ -68,13 +68,13 @@ Provide actionable recommendations for issue triage and assignment:
 **When Requirement Clarity (Dimension D) is Medium or Low:**
 - Identify specific gaps in issue description: missing repro steps, unclear expected behavior, undefined acceptance criteria, missing non-functional requirements
 - Draft 3-5 clarifying questions to post as issue comment
-- Suggest additional information needed: screenshots, logs, environment details, OS version, PowerToys version, error messages
+- Suggest additional information needed: screenshots, logs, environment details, OS version, app version, error messages
 - If behavior is ambiguous, propose 2-3 interpretation scenarios and ask reporter to confirm
 - Example questions:
   - "Can you provide exact steps to reproduce this issue?"
   - "What is the expected behavior vs. what you're actually seeing?"
-  - "Does this happen on Windows 10, 11, or both?"
-  - "Can you attach a screenshot or screen recording?"
+  - "Which OS/platform version are you using?"
+  - "Can you attach a screenshot, logs, or screen recording?"
 
 ### B) Correct Label Suggestions
 - Analyze issue type, module, and severity to suggest missing or incorrect labels
@@ -92,7 +92,7 @@ Provide actionable recommendations for issue triage and assignment:
 - Use git blame/log to find who fixed similar issues in the past
 - Search for PR authors who touched relevant files: `git log --all --format='%aN' -- <file_paths> | sort | uniq -c | sort -rn | head -5`
 - Check issue/PR history for frequent contributors to the affected module
-- Suggest 2-3 potential assignees with context: `@<username> - <reason>` (e.g., "fixed similar rendering bug in #12345", "maintains FancyZones module")
+- Suggest 2-3 potential assignees with context: `@<username> - <reason>` (e.g., "fixed similar bug in #12345", "maintains this module")
 
 ### E) Semantic Search for Related Work
 - Use semantic_search tool to find similar issues, code patterns, or past discussions
